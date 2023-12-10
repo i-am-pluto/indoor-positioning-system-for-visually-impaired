@@ -1,0 +1,26 @@
+#video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#video {
+    width: 100%;
+    max-width: 640px;
+}
+
+#controls {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#destination-input {
+    margin-right: 10px;
+}
+
+#capture-button {
+    cursor: pointer;
+    padding: 10px;
+    font-size: 16px;
+}
