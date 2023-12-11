@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
     let captureInterval;
     const capturedFrames = [];
 
-    // Check if the browser supports the getUserMedia API
+
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        // Request access to the camera
+
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(function (stream) {
                 video.srcObject = stream;
@@ -27,32 +27,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const ctx = canvas.getContext('2d');
 
         captureInterval = setInterval(async function () {
-            // Set canvas dimensions to match the video
+
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
 
-            // Draw the current video frame onto the canvas
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            // Get the base64-encoded image data
             const imageData = canvas.toDataURL('image/jpeg');
+            sendToBackend(imageData);
 
-            // Store the image data in the frames array
-
-
-            capturedFrames.push(imageData);
-
-            // Check if we have captured the desired number of frames
-            if (capturedFrames.length === framesPerSecond) {
-                console.log(capturedFrames);
-                // Send the captured frames to the backend
-                //await sendToBackend(capturedFrames);
-
-                // Clear the frames array to start capturing a new set
-                capturedFrames.length = 0;
-            }
-
-            // Clear the canvas after saving each frame
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }, 1000 / framesPerSecond);
     }
@@ -62,10 +45,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function sendToBackend(frame) {
-        // Replace the URL with your backend endpoint
-        const backendURL = 'http://127.0.0.1:5000/getInstructions';
 
-        // Make a POST request to the backend
+        const backendURL = 'http://localhost:5000/getinstuctions'
+
+
         try {
             const response = await fetch(backendURL, {
                 method: 'POST',
@@ -85,17 +68,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Event listener for the capture button
+
     captureButton.addEventListener('click', function () {
         if (destinationInput.value.trim() === '') {
             alert('Please enter a destination.');
             return;
         }
 
-        // Stop the current capture interval if any
+
         stopCapture();
 
-        // Start a new capture
+
         captureAndSendFrames();
     });
 });
